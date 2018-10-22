@@ -69,7 +69,7 @@ void ForwardEulerNumericalMethodForCapsules<ELEMENT_DIM,SPACE_DIM>::UpdateAllNod
 			cell_iter != p_node_population->End();
 			++cell_iter)
 	{
-		//if (bool(dynamic_cast<AbstractSimpleCellCycleModel*>(cell_iter->GetCellCycleModel())))
+		if (dynamic_cast<UniformCellCycleModel*>(cell_iter->GetCellCycleModel()) != nullptr)
 		{
 			if (dynamic_cast<NodeBasedCellPopulation<SPACE_DIM>*>(this->mpCellPopulation))
 			{
