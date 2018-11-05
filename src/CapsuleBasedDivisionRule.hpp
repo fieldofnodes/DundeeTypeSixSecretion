@@ -44,6 +44,10 @@ public:
     }
 
     /**
+     * @return mDaughterLocation.
+     */
+    const c_vector<double, SPACE_DIM>& rGetDaughterLocation() const;
+    /**
      * Overridden CalculateCellDivisionVector() method.
      *
      * @param pParentCell  The cell to divide
