@@ -41,21 +41,42 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 
-#include "CapsuleBasedDivisionRule.hpp"
+#include "AbstractCellBasedTestSuite.hpp"
 #include "ArchiveOpener.hpp"
-#include "HoneycombMeshGenerator.hpp"
-#include "CellsGenerator.hpp"
+
+
+#include "CapsuleBasedDivisionRule.hpp"
 #include "CapsuleForce.hpp"
+#include "CellsGenerator.hpp"
+#include "CheckpointArchiveTypes.hpp"
+
+#include "DifferentiatedCellProliferativeType.hpp"
+
+#include "FixedG1GenerationalCellCycleModel.hpp"
+#include "FixedCentreBasedDivisionRule.hpp"
+
+
+#include "HoneycombMeshGenerator.hpp"
+
+#include "Node.hpp"
 #include "NodeAttributes.hpp"
 #include "NodeBasedCellPopulation.hpp"
 #include "NodeBasedCellPopulationWithCapsules.hpp"
-#include "FixedG1GenerationalCellCycleModel.hpp"
-#include "AbstractCellBasedTestSuite.hpp"
+#include "NodesOnlyMesh.hpp"
+#include "NoCellCycleModel.hpp"
+
+#include "OutputFileHandler.hpp"
+
+#include "PetscTools.hpp"
+#include "PetscSetupAndFinalize.hpp"
+
 #include "RandomDirectionCentreBasedDivisionRule.hpp"
-#include "FixedCentreBasedDivisionRule.hpp"
+
 #include "SmartPointers.hpp"
 
+#include "TypeSixSecretionEnumerations.hpp"
 
+#include "Debug.hpp"
 
 // This test is always run sequentially (never in parallel)
 #include "FakePetscSetup.hpp"
@@ -68,6 +89,7 @@ public:
     {
     	EXIT_IF_PARALLEL;
 
+    	CapsuleForce<2, 2> force;
 		/* We then create a couple of cells at the base of each germarium.
 		 * (we put two cells in each crypt to set off delta-notch patterning) */
 		std::vector<Node<2>*> nodes;
