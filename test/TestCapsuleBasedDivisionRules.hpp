@@ -37,51 +37,30 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define TESTCAPSULEBASEDDIVISIONRULES_HPP_
 
 #include <cxxtest/TestSuite.h>
-
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
-
-#include "AbstractCellBasedTestSuite.hpp"
 #include "ArchiveOpener.hpp"
-
-
-#include "CapsuleBasedDivisionRule.hpp"
-#include "CapsuleForce.hpp"
-#include "CellsGenerator.hpp"
-#include "CheckpointArchiveTypes.hpp"
-
-#include "DifferentiatedCellProliferativeType.hpp"
-
-#include "FixedG1GenerationalCellCycleModel.hpp"
-#include "FixedCentreBasedDivisionRule.hpp"
-
-
 #include "HoneycombMeshGenerator.hpp"
-
-#include "Node.hpp"
-#include "NodeAttributes.hpp"
+#include "CellsGenerator.hpp"
 #include "NodeBasedCellPopulation.hpp"
-#include "NodeBasedCellPopulationWithCapsules.hpp"
-#include "NodesOnlyMesh.hpp"
-#include "NoCellCycleModel.hpp"
-
-#include "OutputFileHandler.hpp"
-
-#include "PetscTools.hpp"
-#include "PetscSetupAndFinalize.hpp"
-
+#include "FixedG1GenerationalCellCycleModel.hpp"
+#include "AbstractCellBasedTestSuite.hpp"
 #include "RandomDirectionCentreBasedDivisionRule.hpp"
-
+#include "FixedCentreBasedDivisionRule.hpp"
 #include "SmartPointers.hpp"
 
+//These are included in relation to the Capsule Force
 #include "TypeSixSecretionEnumerations.hpp"
-
-#include "Debug.hpp"
+#include "DifferentiatedCellProliferativeType.hpp"
+#include "NoCellCycleModel.hpp"
+#include "CapsuleBasedDivisionRule.hpp"
 
 // This test is always run sequentially (never in parallel)
 #include "FakePetscSetup.hpp"
 
-class TestCapsuleBasedDivisionRules : public AbstractCellBasedTestSuite
+#include "Debug.hpp"
+
+class TestCapsuleBasedDivisionRuleAttractiveEndssVersionJon : public AbstractCellBasedTestSuite
 {
 public:
 
@@ -89,7 +68,6 @@ public:
     {
     	EXIT_IF_PARALLEL;
 
-    	CapsuleForce<2, 2> force;
 		/* We then create a couple of cells at the base of each germarium.
 		 * (we put two cells in each crypt to set off delta-notch patterning) */
 		std::vector<Node<2>*> nodes;
@@ -106,7 +84,7 @@ public:
 
 		mesh.GetNode(0u)->AddNodeAttribute(0.0);
 		mesh.GetNode(0u)->rGetNodeAttributes().resize(NA_VEC_LENGTH);
-		mesh.GetNode(0u)->rGetNodeAttributes()[NA_THETA] = 0.25 * M_PI;
+		mesh.GetNode(0u)->rGetNodeAttributes()[NA_THETA] = 0.0;
 		mesh.GetNode(0u)->rGetNodeAttributes()[NA_LENGTH] = 2.0;
 		mesh.GetNode(0u)->rGetNodeAttributes()[NA_RADIUS] = 1.0;
 
@@ -126,25 +104,33 @@ public:
 		std::vector<CellPtr> cells;
 		auto p_diff_type = boost::make_shared<DifferentiatedCellProliferativeType>();
 		CellsGenerator<NoCellCycleModel, 2> cells_generator;
-		cells_generator.GenerateBasicRandom(cells, 3u, p_diff_type);
+		cells_generator.GenerateBasicRandom(cells, 1u, p_diff_type);
 
 		// Create cell population
 		NodeBasedCellPopulation<2> cell_population(mesh, cells);
 
-        CellPtr p_cell0 = cell_population.GetCellUsingLocationIndex(0);
+        //This parent location, is not taking into account the division of the cell.
+		CellPtr p_cell0 = cell_population.GetCellUsingLocationIndex(0);
         c_vector<double, 2> expected_parent_location;
-        expected_parent_location = cell_population.GetLocationOfCellCentre(p_cell0);
+        c_vector<double, 2> axis_vector;
+        const double distance = 0.5*((mesh.GetNode(0u)->rGetNodeAttributes()[NA_LENGTH]) + 2.0*(mesh.GetNode(0u)->rGetNodeAttributes()[NA_RADIUS]));
+        axis_vector(0) = distance*cos(mesh.GetNode(0u)->rGetNodeAttributes()[NA_THETA]);
+        axis_vector(1) = distance*sin(mesh.GetNode(0u)->rGetNodeAttributes()[NA_THETA]);
+        expected_parent_location = cell_population.GetLocationOfCellCentre(p_cell0) - axis_vector;
 
+
+        //New settings
         c_vector<double, 2> expected_daughter_location;
-        expected_daughter_location[0] = 1.2;
-        expected_daughter_location[1] = 3.4;
+        expected_daughter_location = expected_parent_location + 2.0*axis_vector;
+
 
         // Set the division rule for our population to be the random direction division rule
         typedef CapsuleBasedDivisionRule<2,2> CapsuleRule;
         MAKE_PTR_ARGS(CapsuleRule, p_division_rule_to_set, (expected_daughter_location));
 
-        TS_ASSERT_DELTA(p_division_rule_to_set->rGetDaughterLocation()[0], 1.2, 1e-6);
-        TS_ASSERT_DELTA(p_division_rule_to_set->rGetDaughterLocation()[1], 3.4, 1e-6);
+
+
+
 
         cell_population.SetCentreBasedDivisionRule(p_division_rule_to_set);
 
@@ -156,11 +142,20 @@ public:
 
         c_vector<double, 2> parent_location;
         parent_location = positions.first;
-        TS_ASSERT_DELTA(parent_location[0], expected_parent_location[0], 1e-6);
-        TS_ASSERT_DELTA(parent_location[1], expected_parent_location[1], 1e-6);
-
         c_vector<double, 2> daughter_location;
         daughter_location = positions.second;
+/*
+        PRINT_VARIABLE(cell_population.GetCellUsingLocationIndex(0));
+        PRINT_VECTOR(expected_parent_location);
+        PRINT_VECTOR(parent_location);
+        PRINT_VECTOR(p_division_rule_to_set->rGetDaughterLocation());
+        PRINT_VECTOR(daughter_location);
+*/
+        //Checking population is yielding the same results
+        TS_ASSERT_DELTA(p_division_rule_to_set->rGetDaughterLocation()[0], expected_daughter_location[0], 1e-6);
+        TS_ASSERT_DELTA(p_division_rule_to_set->rGetDaughterLocation()[1], expected_daughter_location[1], 1e-6);
+        TS_ASSERT_DELTA(parent_location[0], expected_parent_location[0], 1e-6);
+        TS_ASSERT_DELTA(parent_location[1], expected_parent_location[1], 1e-6);
         TS_ASSERT_DELTA(daughter_location[0], expected_daughter_location[0], 1e-6);
         TS_ASSERT_DELTA(daughter_location[1], expected_daughter_location[1], 1e-6);
     }
@@ -172,9 +167,9 @@ public:
 		/* We then create a couple of cells at the base of each germarium.
 		 * (we put two cells in each crypt to set off delta-notch patterning) */
 		std::vector<Node<3>*> nodes;
-		nodes.push_back(new Node<2>(0u,  false,  0.0, 0.0, 0.0));
-		nodes.push_back(new Node<2>(1u,  false,  1.0, 0.0, 0.0));
-		nodes.push_back(new Node<2>(2u,  false,  2.0, 0.0, 0.0));
+		nodes.push_back(new Node<3>(0u,  false,  0.0, 0.0, 0.0));
+		nodes.push_back(new Node<3>(1u,  false,  1.0, 0.0, 0.0));
+		nodes.push_back(new Node<3>(2u,  false,  2.0, 0.0, 0.0));
 
 		/*
 		 * We then convert this list of nodes to a `NodesOnlyMesh`,

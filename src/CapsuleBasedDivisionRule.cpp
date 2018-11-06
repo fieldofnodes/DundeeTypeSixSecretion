@@ -1,5 +1,21 @@
 #include "CapsuleBasedDivisionRule.hpp"
 #include "TypeSixSecretionEnumerations.hpp"
+
+
+template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
+CapsuleBasedDivisionRule<ELEMENT_DIM, SPACE_DIM>::CapsuleBasedDivisionRule(c_vector<double, SPACE_DIM>& rDaughterLocation)
+{
+    mDaughterLocation = rDaughterLocation;
+}
+
+template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
+const c_vector<double, SPACE_DIM>& CapsuleBasedDivisionRule<ELEMENT_DIM,SPACE_DIM>::rGetDaughterLocation() const
+{
+    return mDaughterLocation;
+}
+
+
+
 template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 std::pair<c_vector<double, SPACE_DIM>, c_vector<double, SPACE_DIM> > CapsuleBasedDivisionRule<ELEMENT_DIM, SPACE_DIM>::CalculateCellDivisionVector(
     CellPtr pParentCell,

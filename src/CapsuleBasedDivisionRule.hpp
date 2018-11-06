@@ -14,6 +14,12 @@ template<unsigned ELEMENT_DIM, unsigned SPACE_DIM=ELEMENT_DIM>
 class CapsuleBasedDivisionRule : public AbstractCentreBasedDivisionRule<ELEMENT_DIM, SPACE_DIM>
 {
 private:
+	   /**
+	     * The specified location of the new daughter cell.
+	     * Initialized in the constructor.
+	     */
+	c_vector<double, SPACE_DIM> mDaughterLocation;
+
     friend class boost::serialization::access;
     /**
      * Serialize the object and its member variables.
@@ -28,13 +34,12 @@ private:
     }
 
 public:
-
     /**
      * Default constructor.
+     *
+     * @param rDaughterLocation the specified location of the daughter cell
      */
-    CapsuleBasedDivisionRule()
-    {
-    }
+    CapsuleBasedDivisionRule(c_vector<double, SPACE_DIM>& rDaughterLocation);
 
     /**
      * Empty destructor.
@@ -47,6 +52,18 @@ public:
      * @return mDaughterLocation.
      */
     const c_vector<double, SPACE_DIM>& rGetDaughterLocation() const;
+    /**
+     * Default constructor.
+     */
+    CapsuleBasedDivisionRule()
+    {
+    }
+
+    /**
+     * Empty destructor.
+     */
+
+
     /**
      * Overridden CalculateCellDivisionVector() method.
      *
