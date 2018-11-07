@@ -414,7 +414,12 @@ void CapsuleForce<ELEMENT_DIM,SPACE_DIM>::AddForceContribution(AbstractCellPopul
 			if (SPACE_DIM==2u)
 			{
 				r_node_a.rGetNodeAttributes()[NA_APPLIED_THETA] += cross_product(torque_vec_a, force_b_a);
+		        //TRACE("Capsule A Applied Theta");
+		        //PRINT_VARIABLE(NA_APPLIED_THETA);
+
 				r_node_b.rGetNodeAttributes()[NA_APPLIED_THETA] += cross_product(torque_vec_b, force_a_b);
+		        //TRACE("Capsule B Applied Theta");
+		        //PRINT_VARIABLE(NA_APPLIED_THETA);
 			}
 			else
 			{

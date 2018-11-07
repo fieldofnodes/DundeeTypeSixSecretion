@@ -24,6 +24,7 @@ private:
     /** Needed for serialization. */
     friend class boost::serialization::access;
 
+
     /**
      * Archive the object and its member variables.
      *
