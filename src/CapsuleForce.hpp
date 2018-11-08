@@ -3,7 +3,6 @@
 #define CAPSULEFORCE_HPP_
 
 #include "AbstractForce.hpp"
-
 #include "ChasteSerialization.hpp"
 #include <boost/serialization/base_object.hpp>
 
@@ -14,7 +13,8 @@
 template<unsigned  ELEMENT_DIM, unsigned SPACE_DIM=ELEMENT_DIM>
 class CapsuleForce : public AbstractForce<ELEMENT_DIM, SPACE_DIM>
 {
-    friend class TestCapsuleForce;
+
+	friend class TestCapsuleForce;
 
 private:
 
@@ -23,6 +23,8 @@ private:
 
     /** Needed for serialization. */
     friend class boost::serialization::access;
+
+
 
 
     /**
