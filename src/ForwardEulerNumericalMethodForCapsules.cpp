@@ -86,7 +86,7 @@ void ForwardEulerNumericalMethodForCapsules<ELEMENT_DIM,SPACE_DIM>::UpdateAllNod
 				Node<SPACE_DIM>* pNodeA = p_node_population->GetNodeCorrespondingToCell(*cell_iter);
 
 
-				double division_length = 2*initial_length + 2*pNodeA->rGetNodeAttributes()[NA_RADIUS];
+				double division_length = 2*initial_length + 4*pNodeA->rGetNodeAttributes()[NA_RADIUS];
 
 				double new_length = initial_length + (division_length - initial_length)*cell_age/cell_cycle_time;
 				//double new_length = initial_length*(1.0+cell_age/cell_cycle_time);

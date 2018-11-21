@@ -17,8 +17,12 @@ class TypeSixMachineProperty : public AbstractCellProperty
 {
 private:
 
-    /** \todo Document member */
-    std::vector<std::pair<unsigned, std::vector<double>> > mMachineData;
+    /** \todo Document member
+	* CellTypeLabel is going to be an integer, for now it will be either 0 or 1. This refers to the TypeSixSecretion of attacker cells.
+	* To goal is to have the capsules be different colors in ParaView as a result of the differreing labels.
+	*/
+	unsigned mCellTypeLabel;
+	std::vector<std::pair<unsigned, std::vector<double>> > mMachineData;
     unsigned mNumMachineFiresInThisTimeStep;
 
 
@@ -37,9 +41,14 @@ public:
     /**
      * @return #mMachineData
      */
-    std::vector<std::pair<unsigned, std::vector<double>> >& rGetMachineData();
+    std::vector<std::pair<unsigned, std::vector<double>> > & rGetMachineData();
     void SetMachineData(std::vector<std::pair<unsigned, std::vector<double>> >);
 
+    /**
+     * @return #mGetCellTypeLabel
+     */
+    unsigned & rGetCellTypeLabel();
+    void SetCellTypeLabel(unsigned);
 
 
 

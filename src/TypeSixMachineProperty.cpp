@@ -8,6 +8,16 @@ TypeSixMachineProperty::TypeSixMachineProperty()
 TypeSixMachineProperty::~TypeSixMachineProperty()
 {
 }
+unsigned & TypeSixMachineProperty::rGetCellTypeLabel()
+{
+    return mCellTypeLabel;
+}
+
+void TypeSixMachineProperty::SetCellTypeLabel(unsigned CellTypeLabel)
+{
+     mCellTypeLabel=CellTypeLabel;
+}
+
 
 std::vector<std::pair<unsigned, std::vector<double>> >& TypeSixMachineProperty::rGetMachineData()
 {
