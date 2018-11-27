@@ -10,7 +10,15 @@ TypeSixMachineProperty::~TypeSixMachineProperty()
 }
 unsigned & TypeSixMachineProperty::rGetCellTypeLabel()
 {
-    return mCellTypeLabel;
+    if (mCellTypeLabel >= 1)
+    {
+    	mCellTypeLabel = 1;
+    }
+    else
+    {
+    	mCellTypeLabel = 0;
+    }
+	return mCellTypeLabel;
 }
 
 void TypeSixMachineProperty::SetCellTypeLabel(unsigned CellTypeLabel)
