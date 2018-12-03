@@ -8,7 +8,7 @@ TypeSixMachineProperty::TypeSixMachineProperty()
 TypeSixMachineProperty::~TypeSixMachineProperty()
 {
 }
-unsigned & TypeSixMachineProperty::rGetCellTypeLabel()
+unsigned TypeSixMachineProperty::GetCellTypeLabel()
 {
     if (mCellTypeLabel >= 1)
     {

@@ -47,7 +47,7 @@ public:
     /**
      * @return #mGetCellTypeLabel
      */
-    unsigned & rGetCellTypeLabel();
+    unsigned GetCellTypeLabel();
     void SetCellTypeLabel(unsigned);
 
 
