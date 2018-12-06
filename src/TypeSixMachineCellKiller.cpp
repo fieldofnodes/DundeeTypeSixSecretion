@@ -20,7 +20,8 @@ TypeSixMachineCellKiller<DIM>::TypeSixMachineCellKiller(AbstractCellPopulation<D
 template<unsigned DIM>
 void TypeSixMachineCellKiller<DIM>::CheckAndLabelCellsForApoptosisOrDeath()
 {
-    assert (DIM >1);
+
+	assert (DIM >1);
     assert(bool(dynamic_cast<NodeBasedCellPopulation<DIM>*>(this->mpCellPopulation)));
     NodeBasedCellPopulation<DIM>* p_population = static_cast<NodeBasedCellPopulation<DIM>*>(this->mpCellPopulation);
 
@@ -32,7 +33,8 @@ void TypeSixMachineCellKiller<DIM>::CheckAndLabelCellsForApoptosisOrDeath()
          cell_iter != p_population->End();
          ++cell_iter)
     {
-        // Get this cell's type six machine property data
+    	MARK;
+    	// Get this cell's type six machine property data
         CellPropertyCollection collection = cell_iter->rGetCellPropertyCollection().template GetProperties<TypeSixMachineProperty>();
         if (collection.GetSize() != 1)
         {
@@ -49,12 +51,13 @@ void TypeSixMachineCellKiller<DIM>::CheckAndLabelCellsForApoptosisOrDeath()
         {
             // If this machine is ready to kill a cell...
             unsigned state = r_pair.first;
+
             if (state == 3u)
             {
                 // ...check if any neighbouring cells are close enough to kill...
                 unsigned node_index = p_population->GetLocationIndexUsingCell(*cell_iter);
                 c_vector<double, DIM> cell_centre = p_population->GetNodeCorrespondingToCell(*cell_iter)->rGetLocation();
-
+                MARK;
 	            NodeBasedCellPopulationWithCapsules<DIM>* p_capsule_pop=(dynamic_cast<NodeBasedCellPopulationWithCapsules<DIM>*>(p_population));
 	            Node<DIM>* p_node = p_capsule_pop->GetNodeCorrespondingToCell(*cell_iter);
 	           	double L = p_node->rGetNodeAttributes()[NA_LENGTH];
@@ -69,8 +72,9 @@ void TypeSixMachineCellKiller<DIM>::CheckAndLabelCellsForApoptosisOrDeath()
                      it != neighbours.end();
                      ++it)
                 {
+
                     Node<DIM>* p_neighbour = p_population->GetNode(*it);
-                    
+
                     // Compute distance between (X,Y) and this neighbouring cell's line segment
 				    const double neighbour_angle = p_neighbour->rGetNodeAttributes()[NA_THETA];
 				    const double neighbour_length = p_neighbour->rGetNodeAttributes()[NA_LENGTH];
@@ -145,18 +149,21 @@ void TypeSixMachineCellKiller<DIM>::CheckAndLabelCellsForApoptosisOrDeath()
 					{
 				            EXCEPTION("TypeSixMachineCellKiller cannot be used unless each cell has a TypeSixMachineProperty");
 					}
-                    
+				    MARK;
                     if (distance_to_neighbour > R || p_population->GetCellUsingLocationIndex(*it)->HasApoptosisBegun())
                     {
-		                //new_data.emplace_back(std::pair<unsigned, double>(r_pair));
+                    	MARK;
+                    	//new_data.emplace_back(std::pair<unsigned, double>(r_pair));
 		            }
 		            else
 		            {
-		            	TRACE("StartingApoptosis");
+		            	//TRACE("StartingApoptosis");
                         // Kill this neighbouring cell
+		            	//MARK;
 		                r_pair.first=0u;
-
+		               // MARK;
                         p_population->GetCellUsingLocationIndex(*it)->StartApoptosis();
+                       // MARK;
                         // Note: In this case we don't store this machine's data in new_data,
 	                    // since the machine is assumed to be destroyed upon killing the 
 	                    // neighbouring cell.

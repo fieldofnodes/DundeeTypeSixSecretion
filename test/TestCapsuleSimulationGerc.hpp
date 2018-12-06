@@ -64,6 +64,7 @@ public:
 		 * We then convert this list of nodes to a `NodesOnlyMesh`,
 		 * which doesn't do very much apart from keep track of the nodes.
 		 */
+
 		NodesOnlyMesh<2> mesh;
 		mesh.ConstructNodesWithoutMesh(nodes, 100.0);
 		c_vector<double, 4> domain_size;
@@ -99,7 +100,6 @@ public:
 			p_model->SetMaxCellCycleDuration(1.6);
 			CellPtr p_cell(new Cell(p_state, p_model));
 			p_cell->SetCellProliferativeType(p_type);
-
 
 
 			double rand_angle = 2*M_PI*RandomNumberGenerator::Instance()->ranf()-M_PI;
@@ -161,6 +161,7 @@ public:
 		/* We then set an end time and run the simulation */
 		simulator.SetEndTime(8.20527000050075); // was 1.0075
 		simulator.Solve();
+		MARK;
 		PRINT_VARIABLE(simulator.rGetCellPopulation().GetNumRealCells());
                 		  }
 
