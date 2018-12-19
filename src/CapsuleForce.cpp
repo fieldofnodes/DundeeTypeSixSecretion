@@ -301,9 +301,10 @@ double CapsuleForce<ELEMENT_DIM,SPACE_DIM>::CalculateForceMagnitude(const double
     const double force = 4.0 * mYoungModulus * pow(overlap, 1.5) * sqrt(effective_radius) / 3.0;
 
     // Horrific hack to stop explosions after division and before appropriate length is set!
-    if (overlap > radiusA)
+    if (overlap > radiusA/2.0)
     {
-    	return 0.0;
+    	//return 0.0;
+    	EXCEPTION("Capsules are overlapping too much.");
     }
 
     return force;

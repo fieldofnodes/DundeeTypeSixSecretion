@@ -47,7 +47,7 @@ class TestCapsuleSimulation2d : public AbstractCellBasedTestSuite
 {
 public:
 
-	void xTestSmallSymmetric2dCapsuleSimulation()
+	void NoTestSmallSymmetric2dCapsuleSimulation()
 	{
 		EXIT_IF_PARALLEL;
 		// Create some capsules
@@ -125,7 +125,7 @@ public:
 
 
 
-	void TestSmallSymmetric2dCapsuleSimulationWithMachineProperties()
+	void NoTestSmallSymmetric2dCapsuleSimulationWithMachineProperties()
 	{
 		EXIT_IF_PARALLEL;
 		// Create some capsules
@@ -241,7 +241,7 @@ public:
 		mesh.GetNode(0u)->AddNodeAttribute(0.0);
 		mesh.GetNode(0u)->rGetNodeAttributes().resize(NA_VEC_LENGTH);
 		mesh.GetNode(0u)->rGetNodeAttributes()[NA_THETA] = 0.25 * M_PI;
-		mesh.GetNode(0u)->rGetNodeAttributes()[NA_LENGTH] = 2.0;
+		mesh.GetNode(0u)->rGetNodeAttributes()[NA_LENGTH] = 1.8;
 		mesh.GetNode(0u)->rGetNodeAttributes()[NA_RADIUS] = 0.5;
 
 
@@ -258,7 +258,7 @@ public:
 			p_cell->SetCellProliferativeType(p_type);
 
 
-			p_cell->SetBirthTime(-0.9);
+			p_cell->SetBirthTime(-0.1);
 			mesh.GetNode(i)->rGetNodeAttributes()[NA_LENGTH] = 2.0 +3.0*p_cell->GetBirthTime()/p_model->GetCellCycleDuration(); ;
 
 
@@ -305,14 +305,14 @@ public:
 		simulator.AddForce(p_capsule_force);
 
 		/* We then set an end time and run the simulation */
-		simulator.SetEndTime(1.1);
+		simulator.SetEndTime(10.1);
 		simulator.Solve();
 
 		TS_ASSERT_EQUALS(simulator.rGetCellPopulation().GetNumRealCells(),2u);
 	}
 
 
-    void TestMachinesWithModifiersAndDivision()
+    void NoTestMachinesWithModifiersAndDivision()
     {
         EXIT_IF_PARALLEL;
         // Create some capsules
@@ -424,7 +424,7 @@ public:
         TS_ASSERT_EQUALS(simulator.rGetCellPopulation().GetNumRealCells(),2u);
     }
 
-    void TestMachinesWithModifiersAndDivisionVis()
+    void NoTestMachinesWithModifiersAndDivisionVis()
        {
            EXIT_IF_PARALLEL;
            // Create some capsules
@@ -531,7 +531,7 @@ public:
 
 
 
-	void xTestSingleCapsuleSimulationWithMachinesKiller()
+	void NoTestSingleCapsuleSimulationWithMachinesKiller()
             		   {
 		EXIT_IF_PARALLEL;
 
@@ -668,7 +668,7 @@ public:
             		   }
 
 
-	void TestSingleCapsuleSimulationWithDivisionAndMachinesKiller()
+	void noTestSingleCapsuleSimulationWithDivisionAndMachinesKiller()
             		   {
 		EXIT_IF_PARALLEL;
 
@@ -737,7 +737,7 @@ public:
 		 {
 			 UniformCellCycleModel* p_model = new UniformCellCycleModel();
 			 p_model->SetMinCellCycleDuration(1.0);
-			 p_model->SetMaxCellCycleDuration(1.6);
+			 p_model->SetMaxCellCycleDuration(1.01);
 			 CellPtr p_cell(new Cell(p_state, p_model));
 			 p_cell->SetCellProliferativeType(p_type);
 
@@ -751,7 +751,7 @@ public:
 			 p_cell->AddCellProperty(p_property);
 
 			 //double birth_time = -RandomNumberGenerator::Instance()->ranf();
-			 p_cell->SetBirthTime(-0.9);
+			 p_cell->SetBirthTime(-0.1);
 			 mesh.GetNode(i)->rGetNodeAttributes()[NA_LENGTH] = 2.0 +3.0*p_cell->GetBirthTime()/p_model->GetCellCycleDuration(); ;
 
 			 cells.push_back(p_cell);
@@ -775,7 +775,7 @@ public:
 		 simulator.SetOutputDirectory("TestSingleCapsuleWithDivisionAndMachinesKiller");
 		 double dt = 1.0/1200.0;
 		 simulator.SetDt(dt);
-		 simulator.SetSamplingTimestepMultiple(10);
+		 simulator.SetSamplingTimestepMultiple(10u);
 
 		 auto p_numerical_method = boost::make_shared<ForwardEulerNumericalMethodForCapsules<2,2>>();
 		 simulator.SetNumericalMethod(p_numerical_method);
@@ -801,7 +801,7 @@ public:
 
 
 		 /* We then set an end time and run the simulation */
-		 simulator.SetEndTime(8.20527000050075); // was 1.0075
+		 simulator.SetEndTime(2.0); // was 1.0075
 		 simulator.Solve();
 		 PRINT_VARIABLE(simulator.rGetCellPopulation().GetNumRealCells());
 

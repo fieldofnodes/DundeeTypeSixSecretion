@@ -35,7 +35,6 @@ std::pair<c_vector<double, SPACE_DIM>, c_vector<double, SPACE_DIM> > CapsuleBase
         	Node<SPACE_DIM>* p_node = rCellPopulation.GetNodeCorrespondingToCell(pParentCell);
 
    	        const double orientation_theta = p_node->rGetNodeAttributes()[NA_THETA];
-
         	const double distance=1.5;
             axis_vector(0) = distance*cos(orientation_theta);
             axis_vector(1) = distance*sin(orientation_theta);

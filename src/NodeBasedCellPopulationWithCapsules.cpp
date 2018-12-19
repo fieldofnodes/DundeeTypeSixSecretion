@@ -158,13 +158,13 @@ CellPtr NodeBasedCellPopulationWithCapsules<DIM>::AddCell(CellPtr pNewCell, Cell
 	        EXCEPTION("TypeSixMachineCellKiller cannot be used unless each cell has a TypeSixMachineProperty");
 	    }
 	    boost::shared_ptr<TypeSixMachineProperty> p_daughter_property = boost::static_pointer_cast<TypeSixMachineProperty>(daughter_collection.GetProperty());
-	    //std::vector<std::pair<unsigned, std::vector<double>> >& r_daughter_data = p_daughter_property->rGetMachineData();
+	    std::vector<std::pair<unsigned, std::vector<double>> >& r_daughter_data = p_daughter_property->rGetMachineData();
 
 
-        //std::vector<std::pair<unsigned, std::vector<double>> > parent_data_copy = *(&r_parent_data);
+        std::vector<std::pair<unsigned, std::vector<double>> > parent_data_copy = *(&r_parent_data);
 
-        //r_daughter_data.clear();
-        //r_daughter_data.clear();
+        r_daughter_data.clear();
+        r_daughter_data.clear();
 
 
 	MAKE_PTR(TypeSixMachineProperty, p_new_daughter_property);
@@ -213,8 +213,8 @@ CellPtr NodeBasedCellPopulationWithCapsules<DIM>::AddCell(CellPtr pNewCell, Cell
 		}
 	}
 
-	//(p_parent_property->rGetMachineData()).clear();
-    //(p_daughter_property->rGetMachineData()).clear();
+	(p_parent_property->rGetMachineData()).clear();
+    (p_daughter_property->rGetMachineData()).clear();
 	//Any new memnber variable associated with the TypeSixMachineProperty needs to be addded here and declared at line 115
 	p_new_parent_property->SetCellTypeLabel(cellTypeLabel_parent);
     pParentCell->template RemoveCellProperty<TypeSixMachineProperty>();

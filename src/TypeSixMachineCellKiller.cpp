@@ -33,7 +33,7 @@ void TypeSixMachineCellKiller<DIM>::CheckAndLabelCellsForApoptosisOrDeath()
          cell_iter != p_population->End();
          ++cell_iter)
     {
-    	MARK;
+
     	// Get this cell's type six machine property data
         CellPropertyCollection collection = cell_iter->rGetCellPropertyCollection().template GetProperties<TypeSixMachineProperty>();
         if (collection.GetSize() != 1)
@@ -57,7 +57,7 @@ void TypeSixMachineCellKiller<DIM>::CheckAndLabelCellsForApoptosisOrDeath()
                 // ...check if any neighbouring cells are close enough to kill...
                 unsigned node_index = p_population->GetLocationIndexUsingCell(*cell_iter);
                 c_vector<double, DIM> cell_centre = p_population->GetNodeCorrespondingToCell(*cell_iter)->rGetLocation();
-                MARK;
+
 	            NodeBasedCellPopulationWithCapsules<DIM>* p_capsule_pop=(dynamic_cast<NodeBasedCellPopulationWithCapsules<DIM>*>(p_population));
 	            Node<DIM>* p_node = p_capsule_pop->GetNodeCorrespondingToCell(*cell_iter);
 	           	double L = p_node->rGetNodeAttributes()[NA_LENGTH];
@@ -149,10 +149,10 @@ void TypeSixMachineCellKiller<DIM>::CheckAndLabelCellsForApoptosisOrDeath()
 					{
 				            EXCEPTION("TypeSixMachineCellKiller cannot be used unless each cell has a TypeSixMachineProperty");
 					}
-				    MARK;
-                    if (distance_to_neighbour > R || p_population->GetCellUsingLocationIndex(*it)->HasApoptosisBegun())
+				    //PRINT_VARIABLE(distance_to_neighbour);
+                    if (distance_to_neighbour > 1.2*R || p_population->GetCellUsingLocationIndex(*it)->HasApoptosisBegun())
                     {
-                    	MARK;
+
                     	//new_data.emplace_back(std::pair<unsigned, double>(r_pair));
 		            }
 		            else
@@ -161,9 +161,9 @@ void TypeSixMachineCellKiller<DIM>::CheckAndLabelCellsForApoptosisOrDeath()
                         // Kill this neighbouring cell
 		            	//MARK;
 		                r_pair.first=0u;
-		               // MARK;
+		                MARK;
                         p_population->GetCellUsingLocationIndex(*it)->StartApoptosis();
-                       // MARK;
+                        MARK;
                         // Note: In this case we don't store this machine's data in new_data,
 	                    // since the machine is assumed to be destroyed upon killing the 
 	                    // neighbouring cell.

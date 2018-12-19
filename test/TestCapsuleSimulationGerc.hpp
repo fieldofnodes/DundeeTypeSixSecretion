@@ -110,7 +110,7 @@ public:
              p_cell->AddCellProperty(p_property);
 
 			//double birth_time = -RandomNumberGenerator::Instance()->ranf();
-			p_cell->SetBirthTime(-0.9);
+			p_cell->SetBirthTime(-0.5);
 			mesh.GetNode(i)->rGetNodeAttributes()[NA_LENGTH] = 2.0 +3.0*p_cell->GetBirthTime()/p_model->GetCellCycleDuration(); ;
 
 			cells.push_back(p_cell);
@@ -159,7 +159,7 @@ public:
 
 
 		/* We then set an end time and run the simulation */
-		simulator.SetEndTime(8.20527000050075); // was 1.0075
+		simulator.SetEndTime(2.20527000050075); // was 1.0075
 		simulator.Solve();
 		MARK;
 		PRINT_VARIABLE(simulator.rGetCellPopulation().GetNumRealCells());

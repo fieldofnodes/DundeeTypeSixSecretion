@@ -29,6 +29,62 @@ TypeSixMachineModifier<DIM>::TypeSixMachineModifier()
 }
 
 template<unsigned DIM>
+void TypeSixMachineModifier<DIM>::Setk_1(double k_1)
+{
+
+	mk_1= k_1;
+}
+template<unsigned DIM>
+void TypeSixMachineModifier<DIM>::Setk_2(double k_2)
+{
+
+	mk_2= k_2;
+}
+template<unsigned DIM>
+void TypeSixMachineModifier<DIM>::Setk_3(double k_3)
+{
+
+	mk_3= k_3;
+}
+template<unsigned DIM>
+void TypeSixMachineModifier<DIM>::Setk_4(double k_4)
+{
+
+	mk_4= k_4;
+}
+template<unsigned DIM>
+void TypeSixMachineModifier<DIM>::Setk_5(double k_5)
+{
+
+	mk_5= k_5;
+}
+template<unsigned DIM>
+void TypeSixMachineModifier<DIM>::Setk_6(double k_6)
+{
+
+	mk_6= k_6;
+}
+template<unsigned DIM>
+void TypeSixMachineModifier<DIM>::Setk_7(double k_7)
+{
+
+	mk_7= k_7;
+}
+/*
+template<unsigned DIM>
+void SetMachineParameters(double k_1, double k_2, double k_3, double k_4, double k_5, double k_6, double k_7)
+{
+	mk_1= k_1*60.0;
+	mk_2= k_2*60.0;
+	mk_3= k_3*60.0;
+	mk_4= k_4*60.0;
+	mk_5= k_5*60.0;
+	mk_6= k_6*60.0;
+	mk_7= k_7*60.0;
+}
+*/
+
+template<unsigned DIM>
 void TypeSixMachineModifier<DIM>::SetMachineParametersFromGercEtAl()
 {
 	// Gerc et al, Cell Reports Gerc et al., 2015, Cell Reports 	12 	, 2131–2142	 2015
@@ -217,27 +273,6 @@ void TypeSixMachineModifier<DIM>::SetupSolve(AbstractCellPopulation<DIM,DIM>& rC
 }
 
 template<unsigned DIM>
-void TypeSixMachineModifier<DIM>::Setk_1(double k_1)
-{
-
-	mk_1= k_1;
-}
-
-template<unsigned DIM>
-void TypeSixMachineModifier<DIM>::Setk_5(double k_5)
-{
-
-	mk_5= k_5;
-}
-
-template<unsigned DIM>
-void TypeSixMachineModifier<DIM>::Setk_2(double k_2)
-{
-
-	mk_2= k_2;
-}
-
-template<unsigned DIM>
 unsigned TypeSixMachineModifier<DIM>::GetTotalNumberOfMachines(AbstractCellPopulation<DIM,DIM>& rCellPopulation)
 {
 
@@ -311,12 +346,11 @@ void TypeSixMachineModifier<DIM>::UpdateCellData(AbstractCellPopulation<DIM,DIM>
         for (auto& r_pair : r_data)
         {
 	        unsigned old_state = r_pair.first;
-	        unsigned new_state = old_state;
+        	unsigned new_state = old_state;
 		    double r = RandomNumberGenerator::Instance()->ranf();
-		
 		    switch (old_state)
 		    {
-		        case 1u:
+		    	case 1u:
 		            if (r < mk_2*dt)
 		            {
 		                new_state = 0u;
@@ -347,13 +381,8 @@ void TypeSixMachineModifier<DIM>::UpdateCellData(AbstractCellPopulation<DIM,DIM>
 		                numMachineFiresInThisTimeStep++;
 		            }
 		            break;
-//		        case 4u:
-//		            if (r < mk_8*dt)
-//		            {
-//		                new_state = 3u;
-//		            }
-//		            break;
 		    }
+
 		    r_pair.first = new_state;
         }
         p_property->SetNumMachineFiresInThisTimeStep(numMachineFiresInThisTimeStep);
